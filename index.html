@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Export Bingo</title>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/sanitize.css/2.0.0/sanitize.min.css" rel="stylesheet" media="all" type="text/css">
+<style>
+	/*session export to print */
+
+	@font-face {
+		font-family: 'Crazy';
+		src: url('./Crazy-Sixties.ttf');
+	}
+
+	@font-face {
+		font-family: 'Myriad';
+		src: url('./MyriadPro6Regular.otf');
+	}
+
+	@font-face {
+		font-family: 'Stanberry';
+		src: url('./Stanberry.ttf');
+	}
+
+	html{
+		font-size: 20px;
+		font-family: 'Crazy';
+	}
+
+	.export-cloud, .export-mobile, .export-discovery, .export-web, .export-generic, .card{
+		height: 100vh;
+		width: 100vw;
+		background-color: var(--bg-color, white);
+		color: var(--font-color, black);
+	}
+
+	.card{
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: space-around;
+
+	}
+
+	.export-generic {
+		--bg-color: #b1b3b6;
+		--font-color: #ffffff;
+	}
+
+	.export-web {
+		page-break-inside: avoid;
+		--bg-color: #f2b71a;
+		--font-color: #bc8519;
+	}
+
+	.export-discovery {
+		page-break-inside: avoid;
+		--bg-color: #d83b2c;
+		--font-color: #f2b71a;
+	}
+
+	.export-cloud {
+		page-break-inside: avoid;
+		--bg-color: #5179bc;
+		--font-color: #f2b71a;
+	}
+
+	.export-mobile {
+		page-break-inside: avoid;
+		--bg-color: #3b9044;
+		--font-color: #f2b71a;
+	}
+
+	header{
+		width: calc(100vw - 100px);
+		padding: 0 50px;
+		height:3rem;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		font-size: 2rem;
+	}
+
+	.cadre, .grille{
+		--width-cadre: 95vw;
+		width: calc(20px + var(--width-cadre));
+		height: calc(20px + 600px);
+		display: flex;
+		background: black;
+		align-items: center;
+		justify-content: center;
+		position: relative;
+	}
+
+	.grille{
+		background: white;
+		height: 600px;
+		width: var(--width-cadre);
+	}
+
+	.cadre::before, .cadre::after, .grille:before, .grille:after{
+		content: '';
+		position: absolute;
+		width: 0;
+		height: 0;
+		--left:0px;
+		--height:50px;
+		--right:calc(95vw + 20px);
+		border-left: var(--left) solid transparent;
+		border-right: var(--right) solid transparent;
+		--color-border: black;
+	}
+
+	.cadre:before, .grille:before{
+		top: calc(-1 * var(--height));
+		border-bottom: var(--height) solid var(--color-border);
+	}
+
+
+	.cadre:after, .grille:after{
+		--height:20px;
+		bottom: calc(-1 * var(--height));
+		border-top: var(--height) solid var(--color-border);
+	}
+
+	.grille:before, .grille:after{
+		--color-border: white;
+		--right: 95vw;
+	}
+
+	.grille{
+		font-family: 'Stanberry';
+		color:#888;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+
+	.grille div{
+		width: calc(var(--width-cadre) / 3 - 5px);
+		height: calc(600px / 4);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.grille div:nth-child(3n+1), .grille div:nth-child(3n+2){
+		border-right: thin solid grey;
+		border-bottom: thin solid grey;
+	}
+	.grille div:nth-child(3n+3){
+		border-bottom: thin solid grey;
+	}
+
+	footer{
+		align-self: flex-end;
+		background: url('./logos.png') no-repeat;
+		background-size: 500px;
+		--bg-left:0px;
+		--bg-top:0px;
+		background-position: var(--bg-left) var(--bg-top);
+		height: 150px;
+		width: 260px;
+	}
+
+	.card.export-cloud footer{
+		--bg-left:0px;
+		--bg-top:-180px;
+	}
+	.card.export-mobile footer{
+		--bg-left:-260px;
+		--bg-top:-180px;
+	}
+	.card.export-discovery footer{
+		--bg-left:0px;
+		--bg-top:0px;
+	}
+	.card.export-web footer{
+		--bg-left:-260px;
+		--bg-top:0px;
+	}
+
+
+</style>
+
+</head>
+<body>
+		<template id="sessionTemplate">
+				<div class="card">
+					<header>
+						<div class="descPlace">
+							<span class="day">JEUDI</span>
+							<span>-</span>
+							<span class="room">TITAN</span>
+							<span>-</span>
+							<span class="hour">10:00</span>
+						</div>
+						<span class="sessionName col-xs-5"></span>
+					</header>
+					<div class="cadre">
+						<div class="grille">
+							<div>Pas assez technique</div>
+							<div>Trop technique</div>
+							<div>Trop Mou</div>
+							<div>Fun</div>
+							<div>Pas Clair</div>
+							<div>Hyper Intéressant</div>
+							<div>J'ai appris qqe chose</div>
+							<div>J'aime les démos</div>
+							<div>Ca manque de démos</div>
+							<div>Ca manque de code</div>
+							<div>Trop de code</div>
+							<div>Trop de démos</div>
+						</div>
+					</div>
+					<footer></footer>
+				</div>
+				</template>
+				<!-- fin ng-repeat-->
+
+				<script type="text/javascript">
+					(async () => {
+
+						Array.prototype.groupBy = function(prop) {
+							return this.reduce(function(groups, item) {
+								var val = item[prop];
+								groups[val] = groups[val] || [];
+								groups[val].push(item);
+								return groups;
+							}, {});
+						}
+
+						const Headers = {
+							'Pragma': 'no-cache',
+							'Access-Control-Allow-Origin':'*',
+							'Content-Type':'text/plain',
+							'Accept-Encoding': 'gzip, deflate, sdch, br',
+							'Accept': 'application/json, text/plain, */*',
+							'Accept-Language': 'fr-FR,en-US;q=0.8,fr;q=0.6,en;q=0.4',
+							'Connection': 'keep-alive',
+							'Origin':'localhost',
+							'Cache-Control': 'no-cache'
+						};
+						const options = {
+							method: 'GET',
+							mode: 'no-cors',
+							headers: Headers,
+							credentials: 'include'
+						};
+
+						const URL_SESSIONS = "./sessions.json";
+						const URL_SCHEDULE = "./schedule.json";
+
+
+						const sessions = await fetch(URL_SESSIONS, options);
+						const sessionsJson = await sessions.json();
+						const schedule = await fetch(URL_SCHEDULE, options);
+						const scheduleJson = await schedule.json();
+
+						scheduleJson.forEach((day) => {
+							let dayStr = 'JEUDI';
+							if (day.date === '2017-10-20'){
+								dayStr = 'VENDREDI';
+							}
+							day.timeslots.forEach((slot) => {
+								const hourStr = slot.startTime;
+								slot.sessions.forEach((sessionId) => {
+									const sessionTmp = sessionsJson[`${sessionId}`];
+									if (sessionTmp && sessionTmp.track){
+										const roomStr = sessionTmp.track.title.toUpperCase();
+										const title = sessionTmp.title.toUpperCase();
+										const classTrack = sessionTmp.tags.indexOf('Web') != -1 ? 'web' :
+													sessionTmp.tags.indexOf('Mobile') != -1 ? 'mobile' :
+													sessionTmp.tags.indexOf('Cloud') != -1 ? 'cloud' : 'discovery';
+
+										// On prépare une ligne pour le tableau
+										const template = document.querySelector("#sessionTemplate");
+										const card = template.content.querySelector(".card");
+										card.classList.remove('export-web');
+										card.classList.remove('export-cloud');
+										card.classList.remove('export-mobile');
+										card.classList.remove('export-discovery');
+										card.classList.add(`export-${classTrack}`);
+
+										const limitName = 40;
+										template.content.querySelector('.sessionName').innerHTML = title.substring(0,limitName).toUpperCase() + (title.length > limitName ? '...' : '');
+										template.content.querySelector('.day').innerHTML = dayStr;
+										template.content.querySelector('.hour').innerHTML = hourStr;
+										template.content.querySelector('.room').innerHTML = roomStr;
+
+										// On clone la ligne et on l'insère dans le tableau
+										var clone = document.importNode(template.content, true);
+										document.body.appendChild(clone);
+									}
+								});
+							});
+						});
+
+
+						function fillSession(session){
+							// On prépare une ligne pour le tableau
+							const template = document.querySelector("#sessionTemplate");
+							const card = template.content.querySelector(".card");
+							const classTrack = session.trackLabel === 'Web' ? 'web' :
+											session.trackLabel === 'Mobile & IoT' ? 'mobile' :
+											session.trackLabel === 'Cloud, DevOps & BigData' ? 'cloud' : 'discovery';
+							card.classList.remove('export-web');
+							card.classList.remove('export-cloud');
+							card.classList.remove('export-mobile');
+							card.classList.remove('export-discovery');
+							card.classList.add(`export-${classTrack}`);
+
+							const limitName = 60;
+							template.content.querySelector('.sessionName').innerHTML = session.name.substring(0,limitName).toUpperCase() + (session.name.length > limitName ? '...' : '');
+
+							// On clone la ligne et on l'insère dans le tableau
+							var clone = document.importNode(template.content, true);
+							document.body.appendChild(clone);
+						}
+					})()
+				</script>
+
+</body>
+</html>
